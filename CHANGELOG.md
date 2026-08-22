@@ -21,8 +21,30 @@ release and use their own numbering.
 - The Process Tools sidebar now reopens the same groups you had open when you last closed the app - switch it off in General / Updates if you prefer everything closed at startup
 - Added an interface size adjustment (Advanced Settings > General / Updates) - scales buttons, text and dialogs together, relative to your Windows display scaling
 - Added Histogram Transformation - the PixInsight-style stretch, with black, midtone and white handles under a live RGB histogram, the transfer curve drawn against the identity diagonal, and an Auto button that suggests a starting point from the image itself
+- The debayer algorithm override now restores your Siril setting on every failure path, including a failed engine launch and an app crash mid-stack - previously those routes could leave your own Siril preference changed with nothing to put it back
+- FIXED: the Equalize CFA switch sent Siril's -cfa flag, which is for cosmetic correction, instead of -equalize_cfa which is what equalises the flat's colour channels - so the colour-cast correction the switch promised was never actually applied
+- Cosmetic correction now passes -cfa for Bayer data so it examines the correct neighbouring pixels, and cold/hot sigma thresholds are exposed and default to 3/3. Siril's own default detects HOT pixels only, so a switch called Clean Hot & Cold Pixels was previously cleaning half of what its name promised
+- Added the remaining calibration options: Fuji X-Trans autofocus correction and the choice to calibrate excluded frames
+- Fixed a thread-safety bug in the Blink Tool: changing the stretch mode built its display images on a background thread, which Tk does not allow. The image processing still happens in the background, but the display objects are now created on the main thread as they should be
+- The frame list's column headers now explain themselves - hover any of them for a description of what FWHM, Roundness, RMSE, BG Noise and the rest actually measure, and which direction is better
+- Star detection now resets to Siril's defaults at the start of every run. These settings persist inside Siril between sessions, so a value left over from a previous run - or from your own use of the Siril GUI - could previously affect a stack without any indication
+- Star detection now exposes search radius, minimum roundness, PSF fit iterations, Gaussian or Moffat model with minimum beta, and relaxed star checks - only the noise threshold was adjustable before
+- Added Centre of Gravity framing, Siril's fourth framing method - keeps more field than Intersection while still giving a clean rectangle
+- Added a registration output scale (0.1 to 3), sitting with the drizzle options because it is what sets the drizzle factor - 2 for 2x, 3 for 3x. Siril's drizzle flag carries no magnification of its own. It also works without drizzle as a plain rescale, including downscaling for quick test stacks
+- Drizzle on OSC data now works properly as Bayer drizzle - calibration leaves those frames undebayered so Siril can reconstruct colour from the CFA pattern, which its documentation requires and which is where drizzle helps OSC data most. Previously drizzling colour frames handed Siril already-debayered data
+- Drizzle now also applies with Mosaic and Intersection framing, not just standard
+- FIXED: the registration interpolation choices sent the wrong algorithm - Bisquared sent cubic and Bicubic sent lanczos4. They now use Siril's own names, and an existing setting is migrated to whichever algorithm it was really using, so results do not change
+- Registration now offers everything Siril's register command accepts: all six interpolation methods, clamping control, the transformation model (homography, affine, similarity, shift), minimum star pairs, maximum stars, and star-list output
+- Drizzle restored, on the registration step where Siril actually implements it, with pixel fraction and kernel choice
+- Every option Siril's stack command accepts is now available: all five methods including Minimum and Maximum, all eight rejection types, and all four weighting modes - Background Noise and Frames Stacked were previously unreachable
+- Added the rest of Siril's stacking options: equalize colour backgrounds, fast normalisation, force 32-bit output, rejection maps, edge feathering and overlap normalisation - each one only offered to the stacking methods that actually accept it
+- Added frame filtering - let Siril leave the worst frames out of the stack by FWHM, weighted FWHM, roundness, background level, star count or quality, as a percentage, a k-sigma multiple or an absolute threshold
+- FIXED: three of the five stacking methods wrote a command Siril could not run. Median Sigma Clipping, Linear Fit and GESD are rejection TYPES in Siril, not stacking methods, so choosing them would have failed the whole stack. All now work, and Percentile, MAD and no-rejection have been added alongside them
+- Removed Upscale x2 before stacking. The Output scale control on the Alignment tab does the same job at registration and does it better - any factor from 0.1 to 3 rather than a fixed 2x, and it is the one drizzle uses. Having both meant they could be enabled together for an unintended 4x
+- FIXED: the drizzle switches added a -drizzle flag that does not exist on Siril 1.4's stack command. Replaced with the real option, Upscale x2 before stacking. The 3x switch has gone - Siril has no 3x
+- Stacking options that only apply to certain methods are no longer sent with the ones that reject them - normalisation and weighting on Sum, maximize and upscale on Median
 - Added a Licensing section to About / Credits - AstroStacker Pro is GPL v3 with its source in every release, and Siril is bundled unmodified with its own licence and AUTHORS file alongside it
-- Moved Debayer Algorithm and Image Weighting out of Advanced Settings into the main sidebar, under Light Stacking Algorithm
+- Reorganised the sidebar's Core Parameters around what actually changes between targets: the Sigma Low and Sigma High rejection sliders moved up from Advanced Settings to sit with the stacking algorithm they belong to, and Framing joined them. Image Weighting stays. Debayer Algorithm moved back to Advanced Settings > RAW/FITS, alongside the note explaining it, since it is a set-once preference rather than a per-target choice
 - Moved Pre-Stacking Correction into the Calibration tab, alongside the Master Dark it uses, and removed the now-empty Cosmetic tab
 - Renamed the Image Viewer tab to Image Editor, and the Mini Viewer's swap button to Swap with Editor - it is the window the tools actually work on, and the name now says so
 - Tool previews can now be zoomed and panned - mouse wheel to zoom, drag to pan, and a Fit button (or a double-click) to see the whole image again. Added to Colour Masks, Dust Lane Enhancer, Dark Structure Enhance, Multiscale Local Contrast and RangeSelection Mask
@@ -33,6 +55,7 @@ release and use their own numbering.
 - Added a warning on exit when a session has results you never saved, with a Don't warn me again option
 - Added Reset All Settings, which puts everything back to defaults without touching your profiles or images
 - Moved the update controls out of the About dialog into Advanced Settings > General / Updates - the check button and the startup switch now sit together
+- Fixed two scrollbars appearing on the Light and Calibration tabs, where the contents could never size themselves properly
 - Advanced Settings tabs now scroll, so the window no longer has to be as tall as its longest tab
 
 ## v1.0.2
