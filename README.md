@@ -1,8 +1,10 @@
-# AstroStacker Pro
+# AstroSuite Pro
 
-**Version 1.0.3** — a Windows desktop application for astrophotography stacking and post-processing.
+**Version 1.0.4** — a Windows desktop application for astrophotography stacking and post-processing.
 
-AstroStacker Pro wraps the [Siril](https://siril.org/) command-line engine for calibration and stacking, and adds a large native image-processing toolset built directly into its own image editor.
+AstroSuite Pro wraps the [Siril](https://siril.org/) command-line engine for calibration and stacking, and adds a large native image-processing toolset built directly into its own image editor.
+
+> Previously released as **AstroStacker Pro**. Renamed at 1.0.4 - it does considerably more than stack now. Settings saved under the old name are carried across automatically the first time you run it.
 
 <img width="3840" height="2100" alt="Screenshot1" src="https://github.com/user-attachments/assets/62991057-4a7f-4bc6-95e8-7647c24ba1aa" />
 <img width="3840" height="2100" alt="Screenshot2" src="https://github.com/user-attachments/assets/f4111319-1ee3-40e3-afdc-2d660fb38954" />
@@ -12,8 +14,9 @@ AstroStacker Pro wraps the [Siril](https://siril.org/) command-line engine for c
 ## Contents
 
 - [Features](#features)
+- [Interface](#interface)
 - [Stacking](#stacking)
-- [Image Editor](#image-editor)
+- [Image Editor](#image-Editor)
 - [Tools](#tools)
   - [Masking](#masking)
   - [Image Prep](#image-prep)
@@ -44,11 +47,27 @@ AstroStacker Pro wraps the [Siril](https://siril.org/) command-line engine for c
 
 ---
 
+## Interface
+
+- **Menu bar and icon toolbar** across the top - File, Edit, Tools, Settings, Help and About, with a single row of drawn icons for the actions used most
+- **Collapsible left panel** with two views, chosen from vertical tabs on the window's edge:
+  - **Stacking** - frame types, core parameters, output settings and profiles
+  - **History** - every tool applied to the current image, in order. Click any step to return to how the image looked at that point. Earlier sessions on the same image are kept in a permanent log, so months later you can see what you did and when
+- **Information Panel and Console** can be hidden together, giving their height to the image
+- **Hover tooltips** - a short bubble under the pointer after a pause, with the full description in the Information Panel. Toolbar icons show their name; everything else shows a one-line summary. Switchable off under Settings
+- **Before / after compare** on the Editor toolbar - one click shows the image as it was before any editing, another returns
+- **Timing summary** after every stacking run: each step with its duration, frame count and share of the total, so a slow run can be compared against a previous one rather than guessed at
+- **Offline star catalogue** (optional, ~1.1 GB) for plate solving, so it no longer depends on a remote server
+
+---
+
 ## Stacking
 
 - Bundled portable Siril CLI (static copy — no self-update)
 - Automatic dark-frame matching across every valid temperature group
-- Per-filter handling for multi-filter sessions
+- Per-filter handling for multi-filter sessions, with mixed exposure lengths calibrated separately and merged before registration
+- **All five of Siril's stacking methods and all eight rejection types**, verified against the bundled Siril's own documented options
+- Full control over normalisation, weighting, rejection maps, drizzle and frame filtering
 - Master light output loads straight into the image viewer for processing
 
 ---
@@ -152,11 +171,11 @@ Built with Python and CustomTkinter, packaged with PyInstaller.
 The whole application is a single script:
 
 ```
-AstroStacker_Pro_v1.0.3.py
+AstroSuite_Pro_v1_0_4.py
 ```
 
 ```bash
-python "AstroStacker_Pro_v1.0.3.py"
+python "AstroSuite_Pro_v1_0_4.py"
 ```
 
 The bundled `Siril/bin/siril-cli.exe` must sit alongside it.
@@ -165,7 +184,7 @@ The bundled `Siril/bin/siril-cli.exe` must sit alongside it.
 
 ## Credits
 
-AstroStacker Pro's native tools are ports of, or built from, real published work. Full credit to their authors:
+AstroSuite Pro's native tools are ports of, or built from, real published work. Full credit to their authors:
 
 - **Siril** — stacking and calibration engine
 - **Bill Blanshan & Mike Cranfield** — Narrowband Normalization, Star Reduction, Screen Stars, Color Masks

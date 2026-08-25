@@ -1,0 +1,70 @@
+# ---------------------------------------------------------------
+# AstroSuite Pro
+# ---------------------------------------------------------------
+
+# --- Things that must never be committed ------------------------
+
+# The offline star catalogue. About 1.4 GB unpacked, and it is not
+# yours to redistribute - the app downloads it from Zenodo on
+# request. GitHub rejects single files over 100 MB anyway.
+*.dat
+siril_cat*
+gaia_astrometric*
+gaia_photometric*
+
+# The bundled Siril CLI. Large, and it belongs in the release
+# archive rather than the source tree - a git clone should not
+# carry a copy of somebody else's compiled binary.
+Siril/
+siril-cli.exe
+
+# Working folders the app creates at run time.
+AstroSuite_Pro_Temp/
+AstroSuite_Pro_Siril/
+AstroShed_Temp/
+*Stacker Output/
+*Suite Output/
+
+# Saved settings and the processing history. These are per-user -
+# committing them would push your own paths and preferences to
+# everyone who clones the repo.
+last_session.json
+processing_history.json
+Siril_Profiles/
+
+# --- Build output -----------------------------------------------
+build/
+dist/
+*.spec
+*.exe
+*.msi
+
+# --- Python -----------------------------------------------------
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+env/
+
+# --- Astro data -------------------------------------------------
+# Nobody wants a repo full of subframes. Remove these lines if you
+# deliberately want a small sample set under version control.
+*.fit
+*.fits
+*.fts
+*.xisf
+*.ser
+*.cr2
+*.nef
+*.arw
+*.tif
+*.tiff
+
+# --- Editors and OS ---------------------------------------------
+.vscode/
+.idea/
+*.swp
+Thumbs.db
+desktop.ini
+.DS_Store
