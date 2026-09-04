@@ -6,8 +6,8 @@ AstroSuite Pro wraps the [Siril](https://siril.org/) command-line engine for cal
 
 > Previously released as **AstroStacker Pro**. Renamed at 1.0.4 - it does considerably more than stack now. Settings saved under the old name are carried across automatically the first time you run it.
 
-<img width="3840" height="2100" alt="Screenshot1" src="https://github.com/user-attachments/assets/62991057-4a7f-4bc6-95e8-7647c24ba1aa" />
-<img width="3840" height="2100" alt="Screenshot2" src="https://github.com/user-attachments/assets/f4111319-1ee3-40e3-afdc-2d660fb38954" />
+<img width="3840" height="2100" alt="Screenshot1" src="https://github.com/user-attachments/assets/77093926-2909-4850-bd48-0b95bce5a514" />
+<img width="3840" height="2100" alt="Screenshot2" src="https://github.com/user-attachments/assets/cd7dbe85-abcd-40cf-ae74-942b9d739244" />
 
 ---
 
